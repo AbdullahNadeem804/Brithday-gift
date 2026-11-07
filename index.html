@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎂</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #16002e, #4b087a, #bd398c);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 550px;
+    padding: 40px 22px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgba(255, 0, 200, 0.3);
+    position: relative;
+    z-index: 2;
+    animation: appear 1.2s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h1 {
+    font-size: clamp(30px, 8vw, 48px);
+    color: #ffe66d;
+    text-shadow: 0 0 15px #ff9de2;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #ff8ad8; }
+    to { text-shadow: 0 0 25px #fff, 0 0 40px #ff00bb; }
+}
+
+.name {
+    font-size: clamp(30px, 8vw, 43px);
+    color: #ffb9e6;
+    margin: 18px 0;
+    font-weight: bold;
+}
+
+.cake {
+    font-size: clamp(75px, 20vw, 110px);
+    margin: 20px 0;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.message {
+    font-size: 17px;
+    line-height: 1.8;
+    margin: 20px auto;
+    max-width: 420px;
+}
+
+button {
+    background: linear-gradient(45deg, #ff4da6, #ffb347);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff65c5;
+    transition: 0.3s;
+    margin-top: 15px;
+}
+
+button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 30px #fff;
+}
+
+#surprise {
+    display: none;
+    margin-top: 25px;
+    font-size: 21px;
+    color: #ffe66d;
+    line-height: 1.7;
+    animation: appear 1s ease;
+}
+
+.heart {
+    position: fixed;
+    bottom: -30px;
+    font-size: 22px;
+    animation: float 6s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes float {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+footer {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #ffd5ef;
+}
+
+@media(max-width: 480px) {
+    .container {
+        padding: 30px 16px;
+    }
+    .message {
+        font-size: 15px;
+    }
+    button {
+        font-size: 15px;
+        padding: 13px 24px;
+    }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+
+    <h1>🎉 Happy Birthday! 🎉</h1>
+
+    <!-- Change the name here -->
+    <div class="name">Dear Best Friend ❤️</div>
+
+    <div class="cake">🎂</div>
+
+    <div class="message">
+        Today is your special day! 🥳<br>
+        May your life be filled with happiness,
+        love, success and beautiful memories.
+        Keep smiling and shining always! ✨
+    </div>
+
+    <button onclick="showSurprise()">
+        🎁 Click For Surprise
+    </button>
+
+    <div id="surprise">
+        💖 You are truly special! 💖<br>
+        May all your dreams come true.<br>
+        Have an amazing birthday! 🎂🥳
+        <br><br>
+        Lots of love! ❤️
+    </div>
+
+    <footer>
+        Made with ❤️ Just For You
+    </footer>
+
+</div>
+
+<script>
+// Birthday surprise button
+function showSurprise() {
+    document.getElementById("surprise").style.display = "block";
+    startConfetti(300);
+}
+
+// Confetti animation
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+let pieces = [];
+let animationId;
+
+function resizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function startConfetti(amount = 180) {
+    pieces = [];
+
+    const colors = [
+        "#ff4da6", "#ffe66d", "#00ffff",
+        "#ffffff", "#a855f7", "#ff8c42"
+    ];
+
+    for (let i = 0; i < amount; i++) {
+        pieces.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * -window.innerHeight,
+            size: Math.random() * 8 + 4,
+            speed: Math.random() * 4 + 2,
+            drift: Math.random() * 3 - 1.5,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360
+        });
+    }
+
+    cancelAnimationFrame(animationId);
+    animateConfetti();
+}
+
+function animateConfetti() {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    pieces.forEach((p) => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rotation * Math.PI / 180);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+        ctx.restore();
+
+        p.y += p.speed;
+        p.x += p.drift;
+        p.rotation += 3;
+    });
+
+    pieces = pieces.filter(p => p.y < window.innerHeight + 20);
+
+    if (pieces.length > 0) {
+        animationId = requestAnimationFrame(animateConfetti);
+    } else {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+}
+
+// Floating hearts
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 7000);
+}
+
+setInterval(createHeart, 700);
+
+// Start birthday celebration!
+window.addEventListener("load", () => {
+    startConfetti(180);
+});
+</script>
+
+</body>
+</html>
